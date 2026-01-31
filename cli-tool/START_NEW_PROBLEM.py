@@ -12,10 +12,11 @@ try:
     import questionary
 except ImportError:
     print("Missing dependency: questionary. From repo root run:")
-    print("  pip install -r REQUIREMENTS.txt   (or pip3 on Mac/Linux)")
+    print("  pip install -r cli-tool/REQUIREMENTS.txt   (or pip3 on Mac/Linux)")
     sys.exit(1)
 
-REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(_SCRIPT_DIR)
 
 PLATFORM_CHOICES = ["ICPC Archives", "Kattis", "Code Forces"]
 PLATFORM_TO_FOLDER = {
@@ -106,7 +107,12 @@ def main():
         return
 
     shutil.copy2(template_path, target_path)
+    for name in ("input1.txt", "output1.txt"):
+        p = os.path.join(target_dir, name)
+        if not os.path.isfile(p):
+            open(p, "w").close()
     print(f"\n  Created: {target_path}")
+    print(f"  Created: input1.txt, output1.txt (paste sample input/output here)")
     print(f"  Open the file above to start coding.\n")
 
 
