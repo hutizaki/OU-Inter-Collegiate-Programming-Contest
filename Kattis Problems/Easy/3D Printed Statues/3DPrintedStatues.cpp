@@ -65,7 +65,11 @@ using namespace std;
 
 /*
     AI Help:
-    
+    - After 0 days: 1 printer
+    - After 1 day building: 2 printers
+    - After 2 days building: 4 printers
+    - After 3 days building: 8 printers
+    So after k days of building you have 2^k printers, not 2k.
 */
 
 
@@ -79,7 +83,12 @@ int main() {
 
     for (int daysUsedForPrinter = 0; daysUsedForPrinter < numStatues; daysUsedForPrinter++) {
         int remainingStatues = numStatues;
-        int printCapacity = daysUsedForPrinter == 0 ? 1 : (daysUsedForPrinter * 2);
+
+        // ### AI ###
+        // After k days of building, you have 2^k printers (each day doubles: 1→2→4→8...)
+        int printCapacity = (daysUsedForPrinter == 0) ? 1 : (1 << daysUsedForPrinter);
+        // ### AI ###
+
         int numDays = daysUsedForPrinter;
         while (remainingStatues > 0) {
             remainingStatues -= printCapacity;
