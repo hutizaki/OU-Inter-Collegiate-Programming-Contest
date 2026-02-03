@@ -10,6 +10,7 @@
  */
 
 #include <iostream>
+#include <string>
 #include <vector>
 #include <algorithm>
 
@@ -23,7 +24,7 @@ using namespace std;
     - Ethan
 
     Time to completion:
-
+    00:50:00
 */
 
 int main() {
@@ -31,8 +32,43 @@ int main() {
 
     cin >> N >> K >> R;
 
-    int
+    char DNA[N];
+    for (int i = 0; i < N; i++) {
+        cin >> DNA[i];
+    }
 
+    string sDNA(DNA);
 
+    vector<string> PAIRS;
+    char pair[R];
+    for (int i = 0; i < 2*R; i++) {
+        cin >> pair[i % 2];
+        if (i % 2 == 1) {
+            string str(pair);
+            //cout << str << " ";
+            PAIRS.push_back(str);
+        }
+    }
+    vector<int> answer;
+    for (int i = 0; i < R; i++) {
+      int found = sDNA.find(PAIRS[i]);
+        if (found != -1) {
+            //cout << "here";
+            found+=2;
+            //cout << found;
+            answer.push_back(found);
+        }
+    }
+
+    //cout << sDNA << endl;
+
+    sort(answer.begin(), answer.end());
+    
+    if (answer.size()==0) {
+        cout << "impossible" << endl;
+    }
+    else {
+    cout << answer[0] << endl; 
+    }
     return 0;
 }
