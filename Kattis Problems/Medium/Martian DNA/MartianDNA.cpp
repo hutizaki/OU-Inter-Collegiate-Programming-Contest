@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <unordered_map>
 
 using namespace std;
 
@@ -26,49 +27,67 @@ using namespace std;
     Time to completion:
     00:50:00
 */
+bool check_requirements(unordered_map<int, int> requirements, unordered_map<int, int> counter){
+
+    for (auto requirement: requirements){
+        int key = requirement.first;
+        if (!counter[key] || counter.at(key)<requirements.at(key)){
+            return false;
+        }
+    }
+
+    return true;
+}
 
 int main() {
     int N, K, R;
 
     cin >> N >> K >> R;
 
-    char DNA[N];
+    int DNA[N];
     for (int i = 0; i < N; i++) {
         cin >> DNA[i];
     }
 
-    string sDNA(DNA);
-
-    vector<string> PAIRS;
-    char pair[R];
-    for (int i = 0; i < 2*R; i++) {
-        cin >> pair[i % 2];
-        if (i % 2 == 1) {
-            string str(pair);
-            //cout << str << " ";
-            PAIRS.push_back(str);
-        }
-    }
-    vector<int> answer;
-    for (int i = 0; i < R; i++) {
-      int found = sDNA.find(PAIRS[i]);
-        if (found != -1) {
-            //cout << "here";
-            found+=2;
-            //cout << found;
-            answer.push_back(found);
-        }
+    unordered_map<int, int> requirements = unordered_map<int,int>();
+    for (int i = 0; i<R; i++){
+        int nucleotide, amount;
+        cin >> nucleotide >> amount;
+        requirements[nucleotide] = amount;
     }
 
-    //cout << sDNA << endl;
+    int l = 0;
+    int r = 0;
+    unordered_map<int, int> counter = unordered_map<int,int>();
+    int min_length = N+1;
+    while (r < N +1 && l< r+1){
 
-    sort(answer.begin(), answer.end());
+        // debug
+        // cout << l << " " << r << endl;
+        // for (auto count: counter){
+        //     cout << count.first << " AAAA " << count.second << endl;
+        // }
+
+        if (check_requirements(requirements, counter)){
+            min_length = min(r - l, min_length);
+            counter[DNA[l]]--;
+            l++;
+        }
+        else{
+            counter[DNA[r]]++;
+            r++;
+        }
+    }
+
+    if (min_length == N+1){
+        cout << "impossible";
+    }
+    else{
+        cout << min_length;
+    }
     
-    if (answer.size()==0) {
-        cout << "impossible" << endl;
-    }
-    else {
-    cout << answer[0] << endl; 
-    }
     return 0;
 }
+
+
+
