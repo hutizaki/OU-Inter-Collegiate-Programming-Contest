@@ -75,11 +75,6 @@ int main() {
             prefixPadding++;
             middlePadding-=2;
         }
-
-    
     }
-
-
-
     return 0;
 }
